@@ -14,7 +14,7 @@ def read_image(filename, image_color):
 	#image = cv2.imread(filename, image_color)
 	return image    
 
-def read_images(folder, extensions = ['.jpg'], image_color = 1):
+def read_images(folder, extensions = ['.jpg', '.jpeg'], image_color = 1):
 	# image_color == 1: cv2.IMREAD_COLOR : Loads a color image. Any transparency of image will be neglected. It is the default flag.
 	# image_color == 0: cv2.IMREAD_GRAYSCALE : Loads image in grayscale mode
 	# image_color == -1: cv2.IMREAD_UNCHANGED : Loads image as such including alpha channel	
