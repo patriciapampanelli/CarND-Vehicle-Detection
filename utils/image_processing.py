@@ -1,9 +1,13 @@
 # Opencv http://docs.opencv.org/3.0-beta/modules/refman.html
 import cv2
 # print("Opencv version: {}".format(cv2.__version__))	
+
 # Numpy http://www.numpy.org/
 import numpy as np
 # print("Numpy version: {}".format(np.__version__))  
+
+# SkImage http://scikit-image.org/docs/dev/api/skimage.feature.html?highlight=feature%20hog#skimage.feature.hog
+from skimage.feature import hog
 
 def convert_to_gray(images):
 	images_gray = []
@@ -82,45 +86,25 @@ def binary_operator(image, thresh_min=180, thresh_max=255):
 	return binary
 	
 	
-def convert_rgb_to_hls(image):
-	
-	hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
-	H = hls[:,:,0]
-	L = hls[:,:,1]
-	S = hls[:,:,2]
-	
-	return H, L, S	
-
-
-def convert_rgb_to_hsv(image):
-	
-	hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
-	H = hsv[:,:,0]
-	S = hsv[:,:,1]
-	V = hsv[:,:,2]
-	
-	return H, S, V
-
-
-def convert_rgb_to_luv(image):
-	
-	luv = cv2.cvtColor(image, cv2.COLOR_RGB2Luv)
-	L = luv[:,:,0]
-	U = luv[:,:,1]
-	V = luv[:,:,2]
-	
-	return L, U, V	
-	
-
-def convert_rgb_to_lab(image):
-	
-	lab = cv2.cvtColor(image, cv2.COLOR_RGB2Lab)
-	L = lab[:,:,0]
-	A = lab[:,:,1]
-	B = lab[:,:,2]
-	
-	return L, A, B		
-	
+def convertColorSpace(img, color_space='RGB'):
+	feature_image = []	
+	# Convert image to new color space (if specified)
+	if color_space != 'RGB':
+		if color_space == 'HSV':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+		elif color_space == 'LUV':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2LUV)
+		elif color_space == 'HLS':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+		elif color_space == 'YUV':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
+		elif color_space == 'YCrCb':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
+		elif color_space == 'LAB':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
+	else: feature_image = np.copy(img)			 
+	return feature_image	
+		
 	
 def perspective_transform(image):
 	
@@ -153,6 +137,53 @@ def perspective_transform(image):
 	return binary_warped, Minv
 	
 	
+def bin_spatial(img, color_space='RGB', size=(32, 32)):
+	# Convert image to new color space (if specified)
+	if color_space != 'RGB':
+		if color_space == 'HSV':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+		elif color_space == 'LUV':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2LUV)
+		elif color_space == 'HLS':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+		elif color_space == 'YUV':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YUV)
+		elif color_space == 'YCrCb':
+			feature_image = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
+	else: feature_image = np.copy(img)			 
+	# Use cv2.resize().ravel() to create the feature vector
+	# https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.ravel.html
+	features = cv2.resize(feature_image, size)
+	# Return the feature vector
+	return features
+	
+	
+def get_hog_features(image, orient = 9, pix_per_cell = 8, cell_per_block = 2, visualise=False, 
+					 feature_vector=True):
+	if visualise == True:
+		features, hog_image = hog(image, orientations=orient, pixels_per_cell=(pix_per_cell, pix_per_cell),
+								  cells_per_block=(cell_per_block, cell_per_block), transform_sqrt=False, 
+								  visualise=True, feature_vector=False, block_norm="L2-Hys")
+		return features, hog_image
+	else:	  
+		features = hog(image, orientations=orient, pixels_per_cell=(pix_per_cell, pix_per_cell),
+					   cells_per_block=(cell_per_block, cell_per_block), transform_sqrt=False, 
+					   visualise=False, feature_vector=feature_vector, block_norm="L2-Hys")
+		return features
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
 	
 	
 	
