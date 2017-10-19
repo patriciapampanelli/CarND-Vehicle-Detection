@@ -55,8 +55,14 @@ def plot3d(pixels, colors_rgb, axis_labels=list("RGB"), axis_limits=((0, 255), (
 		c=colors_rgb.reshape((-1, 3)), edgecolors='none')
 
 	return ax  # return Axes3D object for further manipulation
-	
-	
+
+
+def drawBoudingBoxes(image, box, color, thick):
+	copy_image = np.copy(image)
+	# https://docs.opencv.org/2.4/modules/core/doc/drawing_functions.html#rectangle
+	for box in bboxes:
+		cv2.rectangle(copy_image, box[0], box[1], color, thick)
+	return copy_image
 	
 	
 	
