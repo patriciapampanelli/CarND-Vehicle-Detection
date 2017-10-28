@@ -89,8 +89,20 @@ I tried various combinations of parameters and these parameters presented the be
 I tried three different classifiers from sklearn and I also used GridSearchCV for parameters optimizations:
 
 - [SVC](http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC)
+Seconds to train SVC: 1024.566371s
+Train Accuracy of SVC =  1.0
+Test Accuracy of SVC = 0.994369
+Seconds to predict with SVC: 0.006285s
 - [DecisionTreeClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier)
+Seconds to train Decision Tree: 276.273658s
+Train Accuracy of Decision Tree =  0.979377815315
+Test Accuracy of Decision Tree = 0.906250
+Seconds to predict with Decision Tree: 0.000229s
 - [Multi-Layer Perceptron classifier](http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier)
+Seconds to train MLP: 344.863771s
+Train Accuracy of MLP =  1.0
+Test Accuracy of MLP = 0.992117
+Seconds to predict with MLP: 0.000392s
 
 ---
 ###### Sliding Window Search
